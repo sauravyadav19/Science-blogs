@@ -1,5 +1,7 @@
 // Import dotenv to support working with Enviroment Variables
-require('dotenv').config();
+const path = require('path')
+// Giving the Absoulte Path for our .env file instead of the Default
+require('dotenv').config({path:path.join(__dirname,'/../.env')});
 
 //Import Express App
 const app = require('./app.js');
