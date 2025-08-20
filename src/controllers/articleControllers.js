@@ -84,3 +84,7 @@ exports.editArticle = async (request, response) => {
          return response.status(500).json({ message: `Error ${error}` });
    }
 };
+
+//To-do (implement Delete for article)
+   // for that we need to write a controller for deleting comments
+   // that way when a post is deleted all the comments on it also gets deleted
