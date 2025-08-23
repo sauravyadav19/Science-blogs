@@ -76,3 +76,41 @@ exports.createComment = async (request,response) =>{
         return response.status(500).json({message:`Comment creation FAILED ${error}`});
     }
 }
+
+exports.editComment = async (request,response) =>{
+    try{
+            const {articleId,commentId} = request.params;
+            const {body} = request.body || {};
+            if(!mongoose.Types.ObjectId.isValid(articleId)){
+                return response.status(400).json({message:'Invalid Article Id'});
+            }
+            if(!mongoose.Types.ObjectId.isValid(commentId)){
+                return response.status(400).json({message:'Invalid comment Id'});
+            }
+            if(!await Article.findById(articleId)){
+                return response.status(400).json({message:'Article not Found'});
+            }
+            if(!await Comment.findById(commentId)){
+                return response.status(400).json({message:'Comment not Found'});
+            }
+            // Making sure that the comment we are editing does indeed exist on that
+            // very article; findOne make sures only and only if all conditions are satisfied
+            // it returns a valid document or else it will return NULL
+            const comment = await Comment.findOne({
+                _id:commentId,
+                article:articleId
+            });
+            if(!comment){
+                return response.status(400).json({message:'That comment does not exist on this Article!'});
+            }
+            if (!body || body.trim().length === 0) {
+                return response.status(400).json({ message: "Comment body cannot be empty" });
+            }
+            await Comment.findByIdAndUpdate(commentId,{$set:{body:body}})
+
+            return response.status(201).json({message:"Comment Edited sucessfully"});
+
+        } catch(error){
+            return response.status(500).json({message:`Couldn't edit the Comment ${error}`});
+        }
+}

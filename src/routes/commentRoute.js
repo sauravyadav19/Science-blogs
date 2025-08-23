@@ -9,5 +9,6 @@ const commentController = require('../controllers/commentController.js')
 commentRoute.get('/', commentController.getAllComments);
 commentRoute.post('/',commentController.createComment);
 commentRoute.delete('/:commentId',commentController.deleteComment);
+commentRoute.patch('/:commentId',commentController.editComment);
 
 module.exports = commentRoute;
