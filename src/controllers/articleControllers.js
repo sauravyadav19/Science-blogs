@@ -41,7 +41,15 @@ exports.getArticleById = async (request, response) => {
 }
 exports.createArticle = async (request, response) => {
    try{
-      const {title,body,author} = request.body;
+      const {title,body,author} = request.body || {};
+      //Validate title (it is not empty or undefined)
+      if (!title || title.trim().length === 0) {
+         return response.status(400).json({ message: "Article title cannot be empty" });
+      }
+    // Validate body(it is not empty or undefined)
+      if (!body || body.trim().length === 0) {
+         return response.status(400).json({ message: "Article body cannot be empty" });
+      }
       const newArticle = new Article({
          title: title,
          body: body,
@@ -56,12 +64,19 @@ exports.createArticle = async (request, response) => {
 exports.editArticle = async (request, response) => {
    try {
          const id = request.params.id;
-         const { title, body, author } = request.body;
+         const { title, body, author } = request.body || {};
 
          if (!mongoose.Types.ObjectId.isValid(id)) {
             return response.status(400).json({ message: 'Invalid Article ID' });
          }
-
+         //Validate title (it is not empty or undefined)
+         if (!title || title.trim().length === 0) {
+            return response.status(400).json({ message: "Article title cannot be empty" });
+         }
+         // Validate body(it is not empty or undefined)
+         if (!body || body.trim().length === 0) {
+            return response.status(400).json({ message: "Article body cannot be empty" });
+         }
          const article = await Article.findByIdAndUpdate(
             id,
             { $set: { body: body, title: title, author: author } },
