@@ -31,3 +31,28 @@ exports.getUserById = async(request,response) =>{
 
     }
 }
+
+exports.createUser = async (request,response) =>{
+    try{
+        const {username,email,password} = request.body || {};
+        if (!username || username.trim().length === 0) {
+            return response.status(400).json({ message: "Username cannot be empty" });
+        }
+        if (!email || email.trim().length === 0) {
+            return response.status(400).json({ message: "email cannot be empty" });
+        }
+        if (!password || password.trim().length === 0) {
+            return response.status(400).json({ message: "password cannot be empty" });
+        }
+        const newUser = new User({
+            username:username,
+            email:email,
+            password:password
+        })
+        await newUser.save();
+        return response.status(201).json({message:'User succesfully Created'});
+    }catch(error){
+        return response.status(500).json({message:`User creation failed ${error}`});
+    }
+
+}
