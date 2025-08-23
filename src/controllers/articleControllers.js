@@ -2,8 +2,6 @@ const mongoose = require('mongoose')
 const Article = require('../models/articleModel');
 const User = require('../models/userModel.js')
 const Comment = require('../models/commentModel.js');
-const { request } = require('express');
-
 
 exports.getArticle = async (request, response) => {
    try{
@@ -100,6 +98,22 @@ exports.editArticle = async (request, response) => {
    }
 };
 
-//To-do (implement Delete for article)
-   // for that we need to write a controller for deleting comments
-   // that way when a post is deleted all the comments on it also gets deleted
+exports.deleteArticle = async (request,response) =>{
+   try{
+      const id = request.params.id;
+      if(!mongoose.Types.ObjectId.isValid(id)){
+         return response.status(400).json({message:"Article id is invalid"});
+      }
+      const article = await Article.findById(id).select('comments');
+      if(!article){
+         return response.status(404).json({message:"Article Not Found!"});
+      }
+      //deleting all the comments on the Article that's getting Deleted
+      await Comment.deleteMany({_id:{$in:article.comments}});
+      // Deleting the concered Article
+      await Article.findByIdAndDelete(id);
+      return response.status(200).json ({message:'The Article and all its Comments are successfully deleted'})
+   } catch (error){
+      return response.status(500).json(`Couldn't delete the Article ${error}`);
+   }
+}

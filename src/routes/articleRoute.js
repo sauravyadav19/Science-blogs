@@ -7,6 +7,7 @@ articleRoute.get('/',articleController.getArticle);
 articleRoute.get('/:id',articleController.getArticleById);
 articleRoute.post('/',articleController.createArticle);
 articleRoute.patch('/:id',articleController.editArticle)
+articleRoute.delete('/:id',articleController.deleteArticle)
 
 articleRoute.use('/:articleId/comments', commentRoute)
 
