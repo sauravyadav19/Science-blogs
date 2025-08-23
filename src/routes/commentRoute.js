@@ -7,5 +7,6 @@ const commentController = require('../controllers/commentController.js')
 
 
 commentRoute.get('/', commentController.getAllComments);
+commentRoute.delete('/:commentId',commentController.deleteComment);
 
 module.exports = commentRoute;

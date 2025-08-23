@@ -4,7 +4,6 @@ const Article = require('../models/articleModel.js');
 
 exports.getAllComments = async (request,response) =>{
     try{
-        console.log("here we are babes!");
         const {articleId} = request.params
         if(!mongoose.Types.ObjectId.isValid(articleId)){
             return response.status(400).json({message:'The Article ID is Invalid'});
@@ -24,4 +23,29 @@ exports.getAllComments = async (request,response) =>{
     }catch(error){
         return response.send(error)
     }
+}
+
+exports.deleteComment = async(request,response) => {
+    try{
+        const articleId = request.params.articleId;
+        const commentId = request.params.commentId;
+        if(!mongoose.Types.ObjectId.isValid(articleId)){
+            return response.status(400).json({message:"The Article Id is invalid"})
+        }
+        if(!mongoose.Types.ObjectId.isValid(commentId)){
+            return response.status(400).json({message:"The Comment Id is invalid"})
+        }
+        const deletedComment = await Comment.findByIdAndDelete(commentId)
+        if(!deletedComment){
+            return response.status(404).json({message:'Comment Not Found'});
+        }
+        // $ pull removes all occurence of an element with whom the condition matches
+        // so whereever in our comment array commentsId matches(in our case just once)
+        // its instance will be removed
+        await Article.findByIdAndUpdate(articleId,{$pull:{comments:commentId}});
+        return response.status(200).json({message:'Comment Deleted successfully'});
+    }catch(error){
+        return response.status(500).json({message:`Couldn't delete the Comment ${error}`});
+    }
+
 }
