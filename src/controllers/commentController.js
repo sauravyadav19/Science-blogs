@@ -114,3 +114,36 @@ exports.editComment = async (request,response) =>{
             return response.status(500).json({message:`Couldn't edit the Comment ${error}`});
         }
 }
+
+exports.getComment = async (request,response) =>{
+     try{
+            const {articleId,commentId} = request.params;
+            if(!mongoose.Types.ObjectId.isValid(articleId)){
+                return response.status(400).json({message:'Invalid Article Id'});
+            }
+            if(!mongoose.Types.ObjectId.isValid(commentId)){
+                return response.status(400).json({message:'Invalid comment Id'});
+            }
+            if(!await Article.findById(articleId)){
+                return response.status(400).json({message:'Article not Found'});
+            }
+            if(!await Comment.findById(commentId)){
+                return response.status(400).json({message:'Comment not Found'});
+            }
+            const comment = await Comment.findOne({
+                _id:commentId,
+                article:articleId
+            })
+            .populate({path:'author',select:'username'})
+            .populate({path:'article',select:'title'});
+            
+            if(!comment){
+                return response.status(400).json({message:'That comment does not exist on this Article!'});
+            }
+            
+            return response.status(200).json({comment});
+
+        } catch(error){
+            return response.status(500).json({message:`Couldn't Reterive the Comment ${error}`});
+        }
+}
