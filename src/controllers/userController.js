@@ -59,3 +59,10 @@ exports.createUser = async (request,response) =>{
 //To-do
     //Implement user Deletion
     //Implement Editing User
+
+exports.registerUser = async (request,response)=>{
+    response.render('registerUser.ejs')
+}
+exports.loginUser = async (request,response)=>{
+    response.render('loginUser.ejs')
+}
