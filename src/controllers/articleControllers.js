@@ -6,7 +6,7 @@ const Comment = require('../models/commentModel.js');
 exports.getArticle = async (request, response) => {
    try{
       const allArticle = await Article.find().populate('author', 'username');
-      return response.status(200).json(allArticle);
+      return response.status(200).render('allArticles.ejs',{allArticle:allArticle});
    }catch(error) {
       return response.status(500).json({ message: `ERROR ${error}`});
    }
@@ -31,7 +31,7 @@ exports.getArticleById = async (request, response) => {
       if(!article) {
          return response.status(404).json({message: "There is no such Article"});
       } else {
-         return response.status(200).json(article);
+         return response.status(200).render('singleArticle.ejs', {article:article});
       }
    }catch(error) {
       return response.status(500).json({message: `ERROR ${error}`});
@@ -116,4 +116,8 @@ exports.deleteArticle = async (request,response) =>{
    } catch (error){
       return response.status(500).json(`Couldn't delete the Article ${error}`);
    }
+}
+
+exports.createArticleForm = async (request,response) =>{
+   response.render('createArticle.ejs');
 }
