@@ -71,7 +71,7 @@ exports.createComment = async (request,response) =>{
         })
         await newComment.save();
         await Article.findByIdAndUpdate(articleId, { $push: { comments: newComment._id } })
-        return response.status(201).json({message:'Comment created Succesfully'})
+        return response.redirect(`/article/${articleId}`);
     }catch(error){
         return response.status(500).json({message:`Comment creation FAILED ${error}`});
     }
