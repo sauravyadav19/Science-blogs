@@ -56,3 +56,6 @@ exports.createUser = async (request,response) =>{
     }
 
 }
+//To-do
+    //Implement user Deletion
+    //Implement Editing User
