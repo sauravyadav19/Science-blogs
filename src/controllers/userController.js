@@ -47,10 +47,9 @@ exports.createUser = async (request,response) =>{
         const newUser = new User({
             username:username,
             email:email,
-            password:password
         })
-        await newUser.save();
-        return response.status(201).json({message:'User succesfully Created'});
+        await User.register(newUser,password);
+        response.redirect('/article')
     }catch(error){
         return response.status(500).json({message:`User creation failed ${error}`});
     }
