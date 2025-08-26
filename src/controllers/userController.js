@@ -65,3 +65,7 @@ exports.registerUser = async (request,response)=>{
 exports.loginUser = async (request,response)=>{
     response.render('loginUser.ejs')
 }
+
+exports.logged = async (request,response)=>{
+    response.redirect('/article');
+}
