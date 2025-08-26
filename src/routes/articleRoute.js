@@ -2,9 +2,10 @@ const express = require('express');
 const articleRoute = express.Router();
 const articleController = require('../controllers/articleControllers.js')
 const commentRoute = require('../routes/commentRoute.js');
+const {isAuthenticated} = require('../middleware/isAuthenticated.js')
 
 articleRoute.get('/',articleController.getArticle);
-articleRoute.get('/createArticle', articleController.createArticleForm)
+articleRoute.get('/createArticle', isAuthenticated, articleController.createArticleForm)
 articleRoute.get('/:id',articleController.getArticleById);
 
 articleRoute.post('/',articleController.createArticle);
