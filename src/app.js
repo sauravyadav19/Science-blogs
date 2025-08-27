@@ -31,6 +31,19 @@ passport.use(new localStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
+//Express provides a response.locals wherein we can store a variable that we want should 
+// be available for one request-response cycle and will automatically will be passed
+// on to the your EJS templates.
+app.use((request,response,next)=>{
+    // passport adds `user` to every request that comes
+    // it is `undefined` if passport has not authenticated else
+    // if it has, then it will add the authenicated user's detail on
+    // this request.user.
+    // Here we taking that user and making  it avialiabe to all our templates
+    response.locals.currentUser = request.user;
+    next();
+})
+
 app.use('/article',articleRoute)
 app.use('/users', userRoute);
 
