@@ -43,6 +43,7 @@
       </div>
     </div>
 
+    <% if(currentUser) { %> 
     <!-- Add Comment-->
     <div class="card shadow-sm mt-4">
       <div class="card-body">
@@ -55,6 +56,18 @@
         </form>
       </div>
     </div>
+    <% } else{ %> 
+      <div>
+        <div class="card shadow-sm mt-4">
+      <div class="card-body">
+        <h5 class="card-title">Login to Comment</h5>
+        <form action = '/users/login' method="get">
+          <input type = "submit" value = "Login" class = "btn btn-success"> 
+        </form>
+      </div>
+    </div>
+      </div>
+      <% } %> 
 
   </div>
 
