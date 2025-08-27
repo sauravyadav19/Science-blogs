@@ -69,3 +69,14 @@ exports.loginUser = async (request,response)=>{
 exports.logged = async (request,response)=>{
     response.redirect('/article');
 }
+exports.logout = (request,response,next) =>{
+    request.logout(
+       function (error){
+        if(error)
+            next(error);
+        console.log("logout out");
+        return response.redirect('/article');
+        }
+    )
+    
+}

@@ -13,8 +13,14 @@
           <li class="nav-item"><a class="nav-link active" href="/article">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="/article/createArticle">New Article</a></li>
           <li class="nav-item"><a class="nav-link" href="/users">Users</a></li>
-          <li class="nav-item"><a class="nav-link" href="/users/login">Login</a></li>
-          <li class="nav-item"><a class="nav-link" href="/users/register">Sign up</a></li>
+          <div class="navbar-nav ml-auto">
+            <% if (!currentUser) { %> 
+            <li class="nav-item"><a class="nav-link" href="/users/login">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="/users/register">Sign up</a></li>
+            <% } else{ %> 
+            <li class="nav-item"><a class="nav-link" href="/users/logout">Log Out</a></li>
+            <% } %>
+          </div>
         </ul>
       </div>
     </div>
