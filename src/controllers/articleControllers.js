@@ -39,7 +39,7 @@ exports.getArticleById = async (request, response) => {
 }
 exports.createArticle = async (request, response) => {
    try{
-      const {title,body,author} = request.body || {};
+      const {title,body} = request.body || {};
       //Validate title (it is not empty or undefined)
       if (!title || title.trim().length === 0) {
          return response.status(400).json({ message: "Article title cannot be empty" });
@@ -51,7 +51,7 @@ exports.createArticle = async (request, response) => {
       const newArticle = new Article({
          title: title,
          body: body,
-         author: author
+         author: request.user._id
       })
       await newArticle.save()
       return response.json({message: "The post has been successfully created"});

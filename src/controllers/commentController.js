@@ -66,7 +66,7 @@ exports.createComment = async (request,response) =>{
         }
         const newComment = new Comment ({
             body: body,
-            author:'68a28b61f467f13a5a028880',
+            author:request.user._id,
             article: articleId
         })
         await newComment.save();
