@@ -4,13 +4,32 @@ const User = require('../models/userModel.js')
 const Comment = require('../models/commentModel.js');
 
 exports.getArticle = async (request, response) => {
-   try{
-      const allArticle = await Article.find().populate('author', 'username');
-      return response.status(200).render('allArticles.ejs',{allArticle:allArticle});
-   }catch(error) {
-      return response.status(500).json({ message: `ERROR ${error}`});
-   }
-}
+  try {
+    const requestedSortingOrder = request.query.sortingOrder === 'asc' ? 'asc' : 'dsc';
+    const sortingOrder  = requestedSortingOrder === 'asc' ? 1 : -1;
+
+    const allArticle = await Article.find()
+      .sort({ createdAt: sortingOrder })
+      .populate('author', 'username');
+
+    const nextSortingOrder = requestedSortingOrder === 'asc' ? 'dsc' : 'asc';
+
+    // ✅ Labels
+    const currentOrderLabel = requestedSortingOrder === 'asc' ? 'Oldest First' : 'Newest First';
+    const buttonLabel = nextSortingOrder === 'asc' ? 'Sort: Oldest First' : 'Sort: Newest First';
+    const buttonIcon = nextSortingOrder === 'asc' ? 'bi-sort-up' : 'bi-sort-down';
+
+    return response.status(200).render('allArticles.ejs', {
+      allArticle,
+      nextSortingOrder,
+      currentOrderLabel,
+      buttonLabel,
+      buttonIcon
+    });
+  } catch (error) {
+    return response.status(500).json({ message: `ERROR ${error}` });
+  }
+};
 exports.getArticleById = async (request, response) => {
    try{
       const id = request.params.id

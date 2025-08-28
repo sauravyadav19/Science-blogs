@@ -15,12 +15,26 @@
   <div class="container my-5">
     
     <!-- Page Heading -->
-    <div class="text-center mb-5">
-      <h1 class="fw-bold text-primary">🧪 All Articles</h1>
-      <p class="text-muted">Explore the latest discussions, discoveries, and ideas</p>
-      <hr class="w-25 mx-auto border-primary border-2 rounded">
-    </div>
+ <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-4 gap-3">
+  <!-- Left side: Heading + Subtitle -->
+  <div class="text-center text-sm-start">
+    <h1 class="fw-bold text-dark mb-2">🧪 All Articles</h1>
+    <p class="text-muted fst-italic mb-0">Explore the latest discussions, discoveries, and ideas</p>
+  </div>
 
+  <!-- Right side: Button + Label -->
+  <div class="text-center text-sm-end">
+    <form action="/article" method="GET">
+      <input type="hidden" name="sortingOrder" value="<%= nextSortingOrder %>">
+      <button type="submit" class="btn btn-outline-primary fw-semibold shadow-sm w-100 w-sm-auto">
+        <i class="bi <%= buttonIcon %>"></i> <%= buttonLabel %>
+      </button>
+    </form>
+    <small class="d-block mt-2 text-muted">
+      <i class="bi bi-eye"></i> Currently: <strong><%= currentOrderLabel %></strong>
+    </small>
+  </div>
+</div>
     <div class="row g-4">
       <% if (allArticle.length === 0) { %>
         <div class="col-12 text-center">
