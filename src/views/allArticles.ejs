@@ -10,28 +10,48 @@
 <body class="bg-light">
 
   <%- include('partials/navbar.ejs') %>
+
   <!-- Main Content -->
   <div class="container my-5">
-    <h1 class="mb-4 text-center">All Articles</h1>
+    
+    <!-- Page Heading -->
+    <div class="text-center mb-5">
+      <h1 class="fw-bold text-primary">🧪 All Articles</h1>
+      <p class="text-muted">Explore the latest discussions, discoveries, and ideas</p>
+      <hr class="w-25 mx-auto border-primary border-2 rounded">
+    </div>
 
     <div class="row g-4">
       <% if (allArticle.length === 0) { %>
         <div class="col-12 text-center">
-          <div class="alert alert-warning">No articles found. Be the first to create one!</div>
+          <div class="alert alert-info shadow-sm rounded-3">
+            No articles found. Be the first to create one!
+          </div>
         </div>
       <% } else { %>
         <% allArticle.forEach(article => { %>
-          <div class="col-md-6 col-lg-4">
-            <div class="card shadow-sm h-100">
-              <div class="card-body">
-                <h5 class="card-title"><%= article.title %></h5>
-                <p class="card-text text-muted">
-                  <%= article.body.substring(0, 100) %>...
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0 rounded-4 hover-shadow">
+              
+              <!-- Card Body -->
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title fw-bold text-dark"><%= article.title %></h5>
+                <p class="card-text text-muted small flex-grow-1">
+                  <%= article.body.substring(0, 120) %>...
                 </p>
-                <a href="/article/<%= article._id %>" class="btn btn-primary btn-sm">Read More</a>
+                <a href="/article/<%= article._id %>" class="btn btn-outline-primary mt-2 align-self-start">
+                  Read More <i class="bi bi-arrow-right"></i>
+                </a>
               </div>
-              <div class="card-footer text-muted small">
-                Posted by <%= article.author?.username || "Anonymous" %>
+              
+              <!-- Card Footer -->
+              <div class="card-footer bg-light border-0 small d-flex justify-content-between align-items-center">
+                <span class="badge bg-success">
+                  <%= article.author?.username || "Anonymous" %>
+                </span>
+                <span class="text-muted">
+                  <i class="bi bi-clock"></i> <%= article.createdAt?.toDateString() %>
+                </span>
               </div>
             </div>
           </div>
@@ -40,7 +60,8 @@
     </div>
   </div>
 
-  <!-- Bootstrap JS -->
+  <!-- Bootstrap JS + Icons -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </body>
 </html>

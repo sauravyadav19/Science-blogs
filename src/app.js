@@ -7,12 +7,14 @@ const sessions = require('express-session');
 const passport = require('passport');
 const localStrategy = require('passport-local');
 const User = require('./models/userModel.js');
+const methodOverride = require('method-override')
 
 // Create an Instance of Express
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname,'/views') )
 app.use(express.json())
+app.use(methodOverride('_method'))
 app.use(express.urlencoded({extended:true}))
 // Passport requires us to integrate express sessions
 app.use(sessions({

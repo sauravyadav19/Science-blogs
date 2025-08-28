@@ -1,27 +1,54 @@
 <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="/article">Science Blog</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-              data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
-              aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link active" href="/article">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="/article/createArticle">New Article</a></li>
-          <li class="nav-item"><a class="nav-link" href="/users">Users</a></li>
-          <div class="navbar-nav ml-auto">
-            <% if (!currentUser) { %> 
-            <li class="nav-item"><a class="nav-link" href="/users/login">Login</a></li>
-            <li class="nav-item"><a class="nav-link" href="/users/register">Sign up</a></li>
-            <% } else{ %> 
-            <li class="nav-item"><a class="nav-link" href="/users/logout">Log Out</a></li>
-            <% } %>
-          </div>
-        </ul>
-      </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm border-bottom border-info">
+  <div class="container-fluid px-3">
+
+    <!-- LOGO -->
+    <a class="navbar-brand fw-bold text-info d-flex align-items-center" href="/article">
+      <i class="bi bi-flask-fill me-2"></i> Science Blog
+    </a>
+
+    <!-- Toggler -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Links -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+
+        <!-- Always visible -->
+        <li class="nav-item">
+          <a class="nav-link" href="/article">
+            <i class="bi bi-house-door-fill me-1"></i> Home
+          </a>
+        </li>
+
+        <% if (!currentUser) { %> 
+          <li class="nav-item">
+            <a class="nav-link" href="/users/login">
+              <i class="bi bi-box-arrow-in-right me-1"></i> Login
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/users/register">
+              <i class="bi bi-person-plus-fill me-1"></i> Sign Up
+            </a>
+          </li>
+        <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/article/createArticle">
+              <i class="bi bi-journal-plus me-1"></i> New Article
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-danger fw-semibold" href="/users/logout">
+              <i class="bi bi-box-arrow-right me-1"></i> Log Out
+            </a>
+          </li>
+        <% } %>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>

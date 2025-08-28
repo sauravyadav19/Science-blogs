@@ -7,7 +7,7 @@ const { isAuthenticated } = require('../middleware/isAuthenticated.js');
 userRoute.get('/', userController.getAllUser);
 userRoute.get('/register',userController.registerUser);
 userRoute.get('/login',userController.loginUser);
-userRoute.post('/login', Authenticate, userController.logged);
+userRoute.post('/login',Authenticate,userController.logged);
 userRoute.get('/logout',isAuthenticated, userController.logout)
 userRoute.get('/:id',userController.getUserById)
 userRoute.post('/', userController.createUser);

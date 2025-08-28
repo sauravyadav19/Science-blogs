@@ -54,7 +54,7 @@ exports.createArticle = async (request, response) => {
          author: request.user._id
       })
       await newArticle.save()
-      return response.json({message: "The post has been successfully created"});
+      return response.redirect(`/article/${newArticle._id}`)
    }catch(error) {
       response.json(`Error ${error}`)
    }
@@ -62,7 +62,7 @@ exports.createArticle = async (request, response) => {
 exports.editArticle = async (request, response) => {
    try {
          const id = request.params.id;
-         const { title, body, author } = request.body || {};
+         const { title, body } = request.body || {};
 
          if (!mongoose.Types.ObjectId.isValid(id)) {
             return response.status(400).json({ message: 'Invalid Article ID' });
@@ -77,7 +77,7 @@ exports.editArticle = async (request, response) => {
          }
          const article = await Article.findByIdAndUpdate(
             id,
-            { $set: { body: body, title: title, author: author } },
+            { $set: { body: body, title: title } },
             { new: true, runValidators: true }
          );
          // by default mongo return the old doucment setting new to true allows for the
@@ -88,10 +88,7 @@ exports.editArticle = async (request, response) => {
             return response.status(404).json({ message: 'Article Not Found!' });
          }
 
-         return response.json({
-            message: 'all Changes are successfully saved',
-            article
-         });
+         return response.redirect(`/article/${id}`);
 
    } catch (error) {
          return response.status(500).json({ message: `Error ${error}` });
@@ -112,7 +109,7 @@ exports.deleteArticle = async (request,response) =>{
       await Comment.deleteMany({_id:{$in:article.comments}});
       // Deleting the concered Article
       await Article.findByIdAndDelete(id);
-      return response.status(200).json ({message:'The Article and all its Comments are successfully deleted'})
+      return response.redirect('/article');
    } catch (error){
       return response.status(500).json(`Couldn't delete the Article ${error}`);
    }
@@ -120,4 +117,10 @@ exports.deleteArticle = async (request,response) =>{
 
 exports.createArticleForm = async (request,response) =>{
    response.render('createArticle.ejs');
+}
+exports.editArticleForm = async(request,response) =>{
+   const {id} = request.params;
+   const article = await Article.findById(id);
+   const {title,body} = article;
+   response.render('editArticle.ejs', {id:id,title:title,body:body});
 }

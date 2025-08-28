@@ -83,7 +83,7 @@
   #body {
     font-size: 1rem;
     line-height: 1.4;
-    min-height: 250px; 
+    min-height: 250px;
   }
 
   .editor-footer {
@@ -102,15 +102,16 @@
   <%- include('partials/navbar.ejs') %>
 
   <div class="editor-container">
-    <form action="/article" method="POST" class="needs-validation d-flex flex-column" novalidate>
+    <form action= <%=`/article/${id}?_method=PATCH` %> method="POST" class="needs-validation d-flex flex-column" novalidate>
       <div class="editor-card">
 
         <!-- Title -->
-        <input 
+        <input
+          id = "title"
           type="text" 
-          id="title" 
           name="title" 
           placeholder="Your article title..."
+          value= "<%=title%>"
           required
           class="form-control">
         <div class="invalid-feedback">
@@ -119,11 +120,11 @@
 
         <!-- Body -->
         <textarea 
-          id="body" 
+          id ="body"
           name="body" 
           placeholder="Start writing your article here..." 
           required
-          class="form-control"></textarea>
+          class="form-control"><%=body%></textarea>
         <div class="invalid-feedback">
           Article body cannot be empty.
         </div>

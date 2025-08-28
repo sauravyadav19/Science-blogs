@@ -44,7 +44,7 @@ exports.deleteComment = async(request,response) => {
         // so whereever in our comment array commentsId matches(in our case just once)
         // its instance will be removed
         await Article.findByIdAndUpdate(articleId,{$pull:{comments:commentId}});
-        return response.status(200).json({message:'Comment Deleted successfully'});
+        return response.redirect(`/article/${articleId}`);
     }catch(error){
         return response.status(500).json({message:`Couldn't delete the Comment ${error}`});
     }
@@ -108,7 +108,7 @@ exports.editComment = async (request,response) =>{
             }
             await Comment.findByIdAndUpdate(commentId,{$set:{body:body}})
 
-            return response.status(201).json({message:"Comment Edited sucessfully"});
+            return response.redirect(`/article/${articleId}`);
 
         } catch(error){
             return response.status(500).json({message:`Couldn't edit the Comment ${error}`});

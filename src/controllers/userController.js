@@ -48,8 +48,12 @@ exports.createUser = async (request,response) =>{
             username:username,
             email:email,
         })
-        await User.register(newUser,password);
-        response.redirect('/article')
+        const registerdUser = await User.register(newUser,password);
+        request.login(registerdUser,(error)=>{
+            if(error) return next(error);
+            return  response.redirect('/article');
+    })
+       
     }catch(error){
         return response.status(500).json({message:`User creation failed ${error}`});
     }
@@ -67,7 +71,8 @@ exports.loginUser = async (request,response)=>{
 }
 
 exports.logged = async (request,response)=>{
-    response.redirect('/article');
+    const redirectUrl = '/article'
+    response.redirect(redirectUrl);
 }
 exports.logout = (request,response,next) =>{
     request.logout(
