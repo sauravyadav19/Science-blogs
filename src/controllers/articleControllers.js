@@ -42,6 +42,7 @@ exports.getArticleById = async (request, response) => {
          .populate({
             path: 'comments',
             select: 'body',
+            options:{sort: {createdAt : -1}},
             populate: {
                path: 'author',
                select: 'username'
