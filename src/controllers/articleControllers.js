@@ -33,6 +33,11 @@ exports.getArticle = async (request, response) => {
 exports.getArticleById = async (request, response) => {
    try{
       const id = request.params.id
+      const commentSortOrder = request.query.commentSortOrder === 'asc' ? 'asc' : 'dsc';
+      const sortComment = commentSortOrder === 'asc' ? 1 : -1;
+      const nextSortingOrder = commentSortOrder === 'asc' ? 'dsc' : 'asc';
+      const buttonValue = commentSortOrder === 'asc' ? 'Sort: Newest First' : 'Sort: Oldest First';
+
       // check upfront if ID is valid
       if(!mongoose.Types.ObjectId.isValid(id)) {
          return response.status(400).json({message: 'Invalid article ID'});
@@ -41,8 +46,8 @@ exports.getArticleById = async (request, response) => {
          .populate('author', 'username email')
          .populate({
             path: 'comments',
-            select: 'body',
-            options:{sort: {createdAt : -1}},
+            select: 'body createdAt',
+            options:{sort: {createdAt : sortComment}},
             populate: {
                path: 'author',
                select: 'username'
@@ -51,7 +56,7 @@ exports.getArticleById = async (request, response) => {
       if(!article) {
          return response.status(404).json({message: "There is no such Article"});
       } else {
-         return response.status(200).render('singleArticle.ejs', {article:article});
+         return response.status(200).render('singleArticle.ejs', {article:article,nextSortingOrder,buttonValue});
       }
    }catch(error) {
       return response.status(500).json({message: `ERROR ${error}`});
