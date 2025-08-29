@@ -110,9 +110,13 @@
         <!-- Left side -->
         <div>
           <div class="fw-semibold text-primary">
-            <i class="bi bi-person-fill"></i> <%= comment.author.username %>
+            <i class="bi bi-person-fill "></i> <%= comment.author.username %>
           </div>
-          <div class="text-muted small"><%= comment.body %></div>
+          <div class ="text-muted small">
+            <i class="bi bi-clock-fill small"></i>
+            <%= comment.createdAt?.toDateString() %>
+          </div>
+          <div class="text-bold large"><%= comment.body %></div>
         </div>
 
         <!-- Right side: Buttons -->
