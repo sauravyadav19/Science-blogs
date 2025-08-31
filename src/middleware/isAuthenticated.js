@@ -3,6 +3,7 @@ exports.isAuthenticated = (request,response,next) =>{
         next();
     }
     else{
+        request.session.returnTo = request.originalUrl
         response.redirect('/users/login')
     }
 

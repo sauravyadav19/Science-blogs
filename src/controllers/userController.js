@@ -67,11 +67,12 @@ exports.registerUser = async (request,response)=>{
     response.render('registerUser.ejs')
 }
 exports.loginUser = async (request,response)=>{
+    request.session.returnTo = request.query.returnTo;
     response.render('loginUser.ejs')
 }
 
 exports.logged = async (request,response)=>{
-    const redirectUrl = '/article'
+    const redirectUrl = request.session.returnTo || '/article';
     response.redirect(redirectUrl);
 }
 exports.logout = (request,response,next) =>{

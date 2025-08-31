@@ -84,9 +84,7 @@
         <h5 class="card-title text-muted mb-3">
           <i class="bi bi-box-arrow-in-right"></i> Login to Comment
         </h5>
-        <form action="/users/login" method="get">
-          <button type="submit" class="btn btn-primary w-100 w-lg-auto">Login</button>
-        </form>
+        <a href="/users/login?returnTo=<%= encodeURIComponent(`/article/${article._id}`) %>" class="btn btn-primary w-100 w-lg-auto">Login</a>
       </div>
     </div>
     <% } %>
