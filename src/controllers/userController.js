@@ -73,6 +73,7 @@ exports.loginUser = async (request,response)=>{
 
 exports.logged = async (request,response)=>{
     const redirectUrl = request.session.returnTo || '/article';
+    delete request.session.returnTo;
     response.redirect(redirectUrl);
 }
 exports.logout = (request,response,next) =>{
