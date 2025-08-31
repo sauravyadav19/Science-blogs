@@ -76,7 +76,11 @@ exports.createArticle = async (request, response) => {
       const newArticle = new Article({
          title: title,
          body: body,
-         author: request.user._id
+         author: request.user._id,
+         image: {
+            filename:request.file.filename,
+            path: request.file.path
+         }
       })
       await newArticle.save()
       return response.redirect(`/article/${newArticle._id}`)
