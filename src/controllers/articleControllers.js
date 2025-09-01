@@ -148,12 +148,15 @@ exports.deleteArticle = async (request,response) =>{
       if(!mongoose.Types.ObjectId.isValid(id)){
          return response.status(400).json({message:"Article id is invalid"});
       }
-      const article = await Article.findById(id).select('comments');
+      const article = await Article.findById(id).select('comments image');
       if(!article){
          return response.status(404).json({message:"Article Not Found!"});
       }
       //deleting all the comments on the Article that's getting Deleted
       await Comment.deleteMany({_id:{$in:article.comments}});
+      if(article.image?.filename){
+          await cloudinary.uploader.destroy(article.image.filename);
+      }
       // Deleting the concered Article
       await Article.findByIdAndDelete(id);
       return response.redirect('/article');
