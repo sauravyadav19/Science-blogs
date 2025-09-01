@@ -1,5 +1,20 @@
 const mongoose = require('mongoose')
+const ImageSchema = new mongoose.Schema(
+    {
+        filename: {
+            type: String,
+            trim: true
+        },
+        path: {
+            type: String,
+            trim: true
+        }
+    }
+)
+ImageSchema.virtual('thumbnail').get(function (){
+    return this.path ? this.path.replace('/upload', '/upload/w_500,h_600') : null;
 
+})
 const articleSchema = new mongoose.Schema(
     {
         title:{
@@ -21,16 +36,8 @@ const articleSchema = new mongoose.Schema(
             type:mongoose.Schema.Types.ObjectId,
             ref:'Comment'
         }],
-        image: {
-            filename: {
-                type: String,
-                trim: true
-            },
-            path: {
-                type: String,
-                trim: true
-            }
-        }
+        image: ImageSchema
+      
     },
     {timestamps:true}
 );

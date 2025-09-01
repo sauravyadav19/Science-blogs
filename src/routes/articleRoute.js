@@ -14,7 +14,7 @@ articleRoute.get('/:id',articleController.getArticleById);
 articleRoute.get('/edit/:id', isAuthenticated,isOwner,articleController.editArticleForm)
 
 articleRoute.post('/',upload.single('articleImage'),articleController.createArticle);
-articleRoute.patch('/:id',articleController.editArticle)
+articleRoute.patch('/:id',upload.single('articleImage'),articleController.editArticle)
 articleRoute.delete('/:id',articleController.deleteArticle)
 
 articleRoute.use('/:articleId/comments', commentRoute)

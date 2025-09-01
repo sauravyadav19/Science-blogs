@@ -102,7 +102,7 @@
   <%- include('partials/navbar.ejs') %>
 
   <div class="editor-container">
-    <form action= <%=`/article/${id}?_method=PATCH` %> method="POST" class="needs-validation d-flex flex-column" novalidate>
+    <form action= <%=`/article/${id}?_method=PATCH` %> method="POST" class="needs-validation d-flex flex-column" enctype="multipart/form-data" novalidate>
       <div class="editor-card">
 
         <!-- Title -->
@@ -111,7 +111,7 @@
           type="text" 
           name="title" 
           placeholder="Your article title..."
-          value= "<%=title%>"
+          value= "<%=article.title%>"
           required
           class="form-control">
         <div class="invalid-feedback">
@@ -124,10 +124,43 @@
           name="body" 
           placeholder="Start writing your article here..." 
           required
-          class="form-control"><%=body%></textarea>
+          class="form-control"><%=article.body%></textarea>
         <div class="invalid-feedback">
           Article body cannot be empty.
         </div>
+        <% if(article.image && article.image.path ) { %>
+        <div>
+          <img src = "<%= `${article.image.thumbnail}`%> " class = "img-thumbnail" style="max-height: 200px; max-width: 200px;">
+        </div>
+        <% } %>
+        <div class="form-check mb-3">
+  <input class="form-check-input" type="checkbox" id="changeImage" name="changeImage">
+  <label class="form-check-label" for="changeImage">
+    Change / Remove Image
+  </label>
+</div>
+
+<!-- File Input (hidden by default) -->
+<div id="imageUploadGroup" class="mb-3" style="display: none;">
+  <label for="articleImage" class="form-label">Upload New Image (leave empty to remove image)</label>
+  <input type="file" class="form-control" id="articleImage" name="articleImage" accept="image/*" disabled>
+</div>
+
+<script>
+  const checkbox = document.getElementById("changeImage");
+  const uploadGroup = document.getElementById("imageUploadGroup");
+  const fileInput = document.getElementById("articleImage");
+
+  checkbox.addEventListener("change", () => {
+    if (checkbox.checked) {
+      uploadGroup.style.display = "block";
+      fileInput.disabled = false;
+    } else {
+      uploadGroup.style.display = "none";
+      fileInput.disabled = true;
+      fileInput.value = ""; // reset file if unchecked
+    }})
+</script>
 
         <!-- Buttons -->
         <div class="editor-footer">

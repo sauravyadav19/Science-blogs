@@ -57,7 +57,9 @@
           <small class="text-muted">(<%= article.author.email %>)</small>
         </div>
         <hr>
+        <% if(article.image && article.image.path){ %>
         <img src="<%= article.image.path %>" class="img-fluid rounded article-img " alt="Article Image">
+        <% } %>
         <p class="card-text fs-6 fs-md-5 lh-lg"><%= article.body %></p>
       </div>
     </div>

@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Article = require('../models/articleModel');
 const User = require('../models/userModel.js')
 const Comment = require('../models/commentModel.js');
+const {cloudinary} = require('../config/cloudinary.js')
 
 exports.getArticle = async (request, response) => {
   try {
@@ -14,7 +15,6 @@ exports.getArticle = async (request, response) => {
 
     const nextSortingOrder = requestedSortingOrder === 'asc' ? 'dsc' : 'asc';
 
-    // ✅ Labels
     const currentOrderLabel = requestedSortingOrder === 'asc' ? 'Oldest First' : 'Newest First';
     const buttonLabel = nextSortingOrder === 'asc' ? 'Sort: Oldest First' : 'Sort: Newest First';
     const buttonIcon = nextSortingOrder === 'asc' ? 'bi-sort-up' : 'bi-sort-down';
@@ -91,7 +91,25 @@ exports.createArticle = async (request, response) => {
 exports.editArticle = async (request, response) => {
    try {
          const id = request.params.id;
-         const { title, body } = request.body || {};
+         const { title, body, changeImage} = request.body || {};
+         const updatedData = {title,body}
+         const article = await Article.findById(id);
+         if(changeImage){
+            if(request.file){
+               if (article.image?.filename) {
+                  await cloudinary.uploader.destroy(article.image.filename);
+               }
+               updatedData.image = {
+                  filename:request.file.filename,
+                  path:request.file.path,
+               }
+            }else{
+               if (article.image?.filename) {
+                  await cloudinary.uploader.destroy(article.image.filename);
+               }
+               updatedData.image = null
+            }
+         }
 
          if (!mongoose.Types.ObjectId.isValid(id)) {
             return response.status(400).json({ message: 'Invalid Article ID' });
@@ -104,9 +122,9 @@ exports.editArticle = async (request, response) => {
          if (!body || body.trim().length === 0) {
             return response.status(400).json({ message: "Article body cannot be empty" });
          }
-         const article = await Article.findByIdAndUpdate(
+         const updateArticle = await Article.findByIdAndUpdate(
             id,
-            { $set: { body: body, title: title } },
+            { $set: updatedData },
             { new: true, runValidators: true }
          );
          // by default mongo return the old doucment setting new to true allows for the
@@ -151,5 +169,5 @@ exports.editArticleForm = async(request,response) =>{
    const {id} = request.params;
    const article = await Article.findById(id);
    const {title,body} = article;
-   response.render('editArticle.ejs', {id:id,title:title,body:body});
+   response.render('editArticle.ejs', {id:id,article});
 }
