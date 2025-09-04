@@ -73,14 +73,23 @@ exports.createArticle = async (request, response) => {
       if (!body || body.trim().length === 0) {
          return response.status(400).json({ message: "Article body cannot be empty" });
       }
+      let image = {}
+      if(!request.file){
+          image = {
+            filename:null,
+            path:null
+         }
+      }else{
+         image = {
+            filename : request.file.filename,
+            path : request.file.path
+         }
+      }
       const newArticle = new Article({
          title: title,
          body: body,
          author: request.user._id,
-         image: {
-            filename:request.file.filename,
-            path: request.file.path
-         }
+         image: image
       })
       await newArticle.save()
       return response.redirect(`/article/${newArticle._id}`)
