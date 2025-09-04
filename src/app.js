@@ -48,6 +48,9 @@ app.use((request,response,next)=>{
 
 app.use('/article',articleRoute)
 app.use('/users', userRoute);
+app.get('/',(request,response)=>{
+    response.redirect('/article');
+})
 
 //Export the Express Instance
 module.exports = app;
